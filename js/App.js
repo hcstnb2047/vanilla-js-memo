@@ -2,7 +2,7 @@ import NotesView from './NotesView.js';
 import NotesAPI from './NotesAPI.js';
 export default class App {
     constructor(root) {
-        this.notes =[];
+        this.notes = [];
         this.activeNote = null;
         this.view = new NotesView(root, this._handlers());
 
@@ -32,26 +32,32 @@ export default class App {
         this.view.updateActiveNote(note);
     }
 
-    _handlers(){
+    _handlers() {
         return {
             onNoteSelect: (noteId) => {
                 const selectedNote = this.notes.find(note => note.id === Number(noteId));
                 this._setActiveNote(selectedNote);
             },
             onNoteAdd: () => {
-                console.log('Note added:');
+                const newNote = {
+                    title: '新しいメモ',
+                    body: 'ここに本文を記入',
+                };
+                NotesAPI.saveNote(newNote);
+                this._refreshNotes();
             },
             onNoteEdit: (title, body) => {
-                console.log('Note edited:', title, body);
-                NotesAPI.saveNote( {
-                   id: this.activeNote.id,
-                   title : title,
-                   body : body,
+                NotesAPI.saveNote({
+                    id: this.activeNote.id,
+                    title: title,
+                    body: body,
                 });
                 this._refreshNotes();
             },
-            onNoteDelete: (id) => {
-                console.log('Note deleted:', id);
+            onNoteDelete: (noteId) => {
+                console.log('Note deleted:', noteId);
+                NotesAPI.deleteNote(noteId);
+                this._refreshNotes();
             }
         }
     }

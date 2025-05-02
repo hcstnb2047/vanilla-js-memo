@@ -3,10 +3,10 @@ import NotesAPI from './NotesAPI.js';
 import NotesView from './NotesView.js';
 
 // テスト用のメモを保存
-NotesAPI.saveNote({
-    title: 'テストメモ',
-    body: 'これはテストメモです。'
-});
+// NotesAPI.saveNote({
+//     title: 'テストメモ',
+//     body: 'これはテストメモです。'
+// });
 
 const root = document.getElementById('app');    
 const app = new App(root);

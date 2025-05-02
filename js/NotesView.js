@@ -99,8 +99,5 @@ export default class NotesView {
         this.root.querySelector(`.notesList-item[data-note-id="${note.id}"]`).classList.add('notesList-item--selected');
     }
 
-    // _clearActiveNote() {
-    //     this.root.querySelector('.notesTitle').value = '';
-    //     this.root.querySelector('.notesBody').value = '';
-    // }
+
 }
