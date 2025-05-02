@@ -35,6 +35,7 @@ export default class NotesView {
         notes.forEach(note => {
             const div = document.createElement('div');
             div.classList.add('notesList-item');
+            div.dataset.noteId = note.id;
             div.innerHTML = `
                 <div class="notesSmall-title">${note.title}</div>
                 <div class="notesSmall-body">${note.body}</div>
@@ -44,7 +45,7 @@ export default class NotesView {
             // クリックイベントを設定
             div.addEventListener('click', (e) => {
                 const currentItem = e.target.closest('.notesList-item');
-                if(currentItem) {   
+                if (currentItem) {
                     this.onNoteSelect(currentItem.dataset.noteId);
                 }
             });
@@ -60,4 +61,23 @@ export default class NotesView {
             notesListContainer.appendChild(div);
         });
     }
+
+    updateActiveNote(note) {
+        // プレビュー内にメモの内容を表示する
+        this.root.querySelector('.notesTitle').value = note.title;
+        this.root.querySelector('.notesBody').value = note.body;
+
+        // 既存の選択状態をクリア
+        this.root.querySelectorAll('.notesList-item').forEach(noteListItem => {
+            noteListItem.classList.remove('notesList-item--selected');
+        });
+
+        // 選択されたメモをハイライト
+        this.root.querySelector(`.notesList-item[data-note-id="${note.id}"]`).classList.add('notesList-item--selected');
+    }
+
+    // _clearActiveNote() {
+    //     this.root.querySelector('.notesTitle').value = '';
+    //     this.root.querySelector('.notesBody').value = '';
+    // }
 }
