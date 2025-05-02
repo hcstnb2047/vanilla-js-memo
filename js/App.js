@@ -14,8 +14,8 @@ export default class App {
         const notes = NotesAPI.getAllNotes();
         this._setNotes(notes);
 
-        // 初回表示時のみ最初のメモを選択
-        if (notes.length > 0 && !this.activeNote) {
+        // 初回表示時またはアクティブなメモが削除された場合に最初のメモを選択
+        if (notes.length > 0 && (!this.activeNote || !notes.find(note => note.id === this.activeNote.id))) {
             this._setActiveNote(notes[0]);
         }
     }

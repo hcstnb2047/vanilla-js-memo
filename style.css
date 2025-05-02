@@ -38,6 +38,10 @@ body {
   background: #9c5c2c;
 }
 
+.notesList {
+  padding: 1em;
+}
+
 .notesList-item {
   cursor: pointer;
 }
