@@ -21,9 +21,25 @@ export default class NotesView {
             <textarea class="notesBody" placeholder="ここに本文を追加"></textarea>
         </div>`;
 
+        const titleField = this.root.querySelector('.notesTitle');
+        const bodyField = this.root.querySelector('.notesBody');
+
         // イベントリスナーの設定
         this.root.querySelector('.notesAdd').addEventListener('click', () => {
             this.onNoteAdd();
+        });
+
+        // タイトルと本文の編集イベント
+        titleField.addEventListener('input', () => {
+            const updatedTitle = titleField.value;
+            const updatedBody = bodyField.value;
+            this.onNoteEdit(updatedTitle, updatedBody);
+        });
+
+        bodyField.addEventListener('input', () => {
+            const updatedTitle = titleField.value;
+            const updatedBody = bodyField.value;
+            this.onNoteEdit(updatedTitle, updatedBody);
         });
     }
 
@@ -63,6 +79,13 @@ export default class NotesView {
     }
 
     updateActiveNote(note) {
+        if (!note) {
+            // メモが選択されていない場合は入力欄をクリア
+            this.root.querySelector('.notesTitle').value = '';
+            this.root.querySelector('.notesBody').value = '';
+            return;
+        }
+
         // プレビュー内にメモの内容を表示する
         this.root.querySelector('.notesTitle').value = note.title;
         this.root.querySelector('.notesBody').value = note.body;
