@@ -15,15 +15,15 @@ const view = new NotesView(app, {
     onNoteAdd() {
         console.log('Note added');
     },
-    onNoteEdit(id, title, body) {
-        console.log('Note edited:', id, title, body);
+    onNoteEdit(title, body) {
+        console.log('Note edited:', title, body);
     },
     onNoteDelete(id) {
         console.log('Note deleted:', id);
     }
 });
 
-// メモ一覧を表示
+// サイドバーにメモ一覧を表示
 view.updateNoteList(NotesAPI.getAllNotes());
 
 // ローカルストレージの内容を確認
