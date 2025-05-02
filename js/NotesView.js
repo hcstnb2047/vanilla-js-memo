@@ -21,47 +21,43 @@ export default class NotesView {
             <textarea class="notesBody" placeholder="ここに本文を追加"></textarea>
         </div>`;
 
-        const btnAddNote = this.root.querySelector('.notesAdd');
-        const inputTitle = this.root.querySelector('.notesTitle');
-        const inputBody = this.root.querySelector('.notesBody');
-
-        btnAddNote.addEventListener('click', () => {
+        // イベントリスナーの設定
+        this.root.querySelector('.notesAdd').addEventListener('click', () => {
             this.onNoteAdd();
         });
-        [inputTitle, inputBody].forEach(inputField => {
-            inputField.addEventListener('blur', () => {
-                const updateTitle = inputTitle.value.trim();
-                const updateBody = inputBody.value.trim();
-
-                this.onNoteEdit(updateTitle, updateBody);
-            });
-        });
-
     }
 
-
-    _createListItemHTML(id, title, body, updated) {
-        const MAX_BODY_LENGTH = 60;
-
-        return `
-            <div class="notesList-item" data-note-id="${id}">
-                <div class="notesSmall-title">${title}</div>
-                <div class="notesSmall-body">
-                    ${body.substring(0, MAX_BODY_LENGTH)}
-                    ${body.length > MAX_BODY_LENGTH ? '...' : ''}
-                </div>
-                <div class="notesSmall-updated">
-                    ${updated}
-                </div>
-            </div>
-        `;
-    }
+    // メモの一覧を表示するメソッド
     updateNoteList(notes) {
         const notesListContainer = this.root.querySelector('.notesList');
+        notesListContainer.innerHTML = '';
 
-        for(const note of notes) {
-            const html = this._createListItemHTML(note.id, note.title, note.body, note.updated);
-            notesListContainer.insertAdjacentHTML('beforeend', html);
-        }
+        notes.forEach(note => {
+            const div = document.createElement('div');
+            div.classList.add('notesList-item');
+            div.innerHTML = `
+                <div class="notesSmall-title">${note.title}</div>
+                <div class="notesSmall-body">${note.body}</div>
+                <div class="notesSmall-updated">${new Date(note.updated).toLocaleString()}</div>
+            `;
+
+            // クリックイベントを設定
+            div.addEventListener('click', (e) => {
+                const currentItem = e.target.closest('.notesList-item');
+                if(currentItem) {   
+                    this.onNoteSelect(currentItem.dataset.noteId);
+                }
+            });
+
+            // ダブルクリックイベントを設定
+            div.addEventListener('dblclick', () => {
+                const doDelete = confirm('本当に削除しますか？');
+                if (doDelete) {
+                    this.onNoteDelete(note.id);
+                }
+            });
+
+            notesListContainer.appendChild(div);
+        });
     }
 }
